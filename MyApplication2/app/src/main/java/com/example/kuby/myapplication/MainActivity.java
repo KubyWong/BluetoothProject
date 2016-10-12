@@ -28,6 +28,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final String DEVICE_NAME = "device_name";
+    public static final String DEVICE_ADDRESS = "device_address";
     private TextView tv;
     private ListView lv;
     private Button btn;
@@ -90,7 +92,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                BluetoothDevice device = devices.get(position);
+                String dName = device.getName();
+                String dAddress = device.getAddress();
+                Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
+                intent.putExtra(DEVICE_NAME, dName);
+                intent.putExtra(DEVICE_ADDRESS, dAddress);
+                startActivity(intent);
             }
         });
     }
@@ -105,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(MainActivity.this, "已经在搜索中,请稍后!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 tv.setText("开始搜索");
                 isScan = true;
 
